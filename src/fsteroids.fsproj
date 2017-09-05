@@ -3,6 +3,10 @@
     <TargetFramework>netstandard1.6</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Tools.fs" />
+    <Compile Include="Math.fs" />
+    <Compile Include="Keyboard.fs" />
+    <Compile Include="Game.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
