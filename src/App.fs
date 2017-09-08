@@ -2,6 +2,7 @@ module Main
 
 open Fable.Core
 open Fable.Core.JsInterop
+open Js
 open Tools
 
 type Value = float
@@ -27,8 +28,11 @@ type State = {
     Ship: Ship
 }
 
-let black = !^ "rgb(0,0,0)"
-let white = !^ "rgb(255,255,255)"
+let paintShip (x, y) (context: Canvas.Context) = 
+    let z = 0.0, 0.0
+    let p = [0.0; 120.0; 240.0] |> List.map (fun a -> z |> movedd (rad a) 1.0 |> scale 50.0)
+
+
 let init canvas timestamp = 
     let context = Browser.contextOf canvas
     let w, h = canvas.width, canvas.height
@@ -36,11 +40,8 @@ let init canvas timestamp =
 
 let render _ (model: State) = 
     let context, (w, h) = model.Context, model.Size
-    context.fillStyle <- black
-    context.fillRect (0., 0., w, h)
-    context.fillStyle <- white
-    let (x, y) = model.Ship.Position
-    context.fillRect (x - 5., y - 5., 10., 10.)
+    Canvas.clear w h context
+    paintShip model.Ship.Position
 
 let update model event timestamp =  model
 

@@ -3,6 +3,7 @@ module Game
 open Fable.Core
 open Fable.Core.JsInterop
 open Tools
+open Js
 
 
 let create init render update tick = 
@@ -10,9 +11,10 @@ let create init render update tick =
     canvas.width <- Browser.width ()
     canvas.height <- Browser.height ()
 
-    let zero = Browser.timestamp ()
+    let now = Browser.timestamp
+    let zero = now ()
     let mutable state = init canvas zero
-    let push event = state <- update state event (Browser.timestamp () - zero)
+    let push event = state <- update state event (now () - zero)
 
     let rec refresh _ = 
         push tick

@@ -4,8 +4,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Tools.fs" />
+    <Compile Include="Js.fs" />
     <Compile Include="Math.fs" />
-    <Compile Include="Keyboard.fs" />
     <Compile Include="Game.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
