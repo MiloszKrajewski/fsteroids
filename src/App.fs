@@ -9,14 +9,18 @@ open Tools
 
 type Ship = 
     {
+        Scale: float
         Position: Point
         Velocity: Vector
         Acceleration: float
         Rotation: float
         RotationSpeed: float
     }
-    static member New x y = 
-        { Position = (x, y); Velocity = (0., 0.); Acceleration = 0.; Rotation = 0.; RotationSpeed = 0. }
+    static member New x y = { 
+        Scale = 10.0
+        Position = (x, y); Velocity = (0.0, 0.0); Acceleration = 0.0
+        Rotation = 0.0; RotationSpeed = 0.0
+    }
 
 
 type State = {
@@ -27,27 +31,26 @@ type State = {
 }
 
 let paintShip ship (context: Browser.Context) = 
-    let { Position = o; Rotation = r } = ship
+    let { Scale = s; Position = o; Rotation = r } = ship
     let z = 0.0, 0.0
     let polygon = 
-        [| 0.0; 120.0; 240.0 |]
-        |> Array.map (fun a -> z |> move (polar 1.0 (rad a)) |> scale 20.0 |> rotate r |> move o)
-        |> List.ofArray
+        [ 0.0; 120.0; 240.0; 0.0 ]
+        |> List.map (fun a -> z |> move (polar 1.0 (rad a)) |> scale s |> rotate r |> move o)
 
-    let poly points = 
+    let paintPoly points = 
         let rec poly points first = 
             match points with
-            | [] -> context.fill ()
+            | [] -> context.fill (); context.stroke ()
             | p :: tail -> 
                 p |> if first then context.moveTo else context.lineTo
                 poly tail false
         poly points true
 
+    context.strokeStyle <- !^ "rgb(0,255,255)"
     context.fillStyle <- !^ "rgb(255,255,0)"
-    poly polygon
+    paintPoly polygon
 
     ()
-
 
 let init canvas timestamp = 
     let context = Browser.contextOf canvas
@@ -59,16 +62,20 @@ let render _ (model: State) =
     Canvas.clear w h context
     context |> paintShip model.Ship
 
-let update model event timestamp =  model
+let update model event timestamp = 
+    match event with
+    | "engine0" -> { model with Ship = Ship.engineOn model.Ship }
+    | "engine1" -> { model with Ship = Ship.engineOff model.Ship }
+    | "tick" -> { model with Ship = Ship.tick model.Ship }
 
 let initialize () = 
-    let push = Game.create init render update "tick"
-    push "hello"
+    let push = Game.start init render update "tick"
+    Browser.onKeyDown (fun e -> 
+        match int e.keyCode with
+        | 38 -> Some "engine1" // up
+        | 40 -> Some "engine0" // dn
+        | _ -> None
+        |> Option.iter push
+    )
 
-// Browser.onLoad (fun _ -> initialize ())
-
-let mutable c = 0
-let i () = c <- c + 1; c
-let a = [| i (); i (); i () |]
-a |> Array.map string |> ignore
-printfn "c: %d" c
+Browser.onLoad (fun _ -> initialize ())
