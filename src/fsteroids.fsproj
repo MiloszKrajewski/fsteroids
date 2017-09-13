@@ -3,10 +3,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Tools.fs" />
-    <Compile Include="Js.fs" />
-    <Compile Include="Math.fs" />
-    <Compile Include="Game.fs" />
+    <Compile Include="System/Tools.fs" />
+    <Compile Include="Domain/Math.fs" />
+    <Compile Include="Domain/Data.fs" />
+    <Compile Include="Platform/Js.fs" />
+    <Compile Include="Platform/Game.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
