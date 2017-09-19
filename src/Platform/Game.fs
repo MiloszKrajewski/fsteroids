@@ -33,4 +33,4 @@ module Game =
 
         Browser.requestFrame refresh
 
-        push (now ())
+        fun event -> Browser.defer 0.0 (fun () -> push (now ()) event)

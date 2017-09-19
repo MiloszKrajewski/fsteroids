@@ -8,6 +8,7 @@
     <Compile Include="Domain/Data.fs" />
     <Compile Include="Platform/Js.fs" />
     <Compile Include="Platform/Game.fs" />
+    <Compile Include="Platform/Objects.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />

@@ -2,6 +2,11 @@ namespace Fsteroids.Domain
 
 open Math
 
+type Event = 
+    | Tick
+    | EngineOn
+    | EngineOff
+
 type Ship = {
     Scale: float
     Position: Point
@@ -27,4 +32,4 @@ module Ship =
         Rotation = 0.0; RotationSpeed = 0.0
     }
 
-    let move v ship = { ship with Position = move v ship.Position }
+    let move v ship = { ship with Position = ship.Position |> move v }
