@@ -27,7 +27,7 @@ module State =
 
 module Ship =
     let zero = { 
-        Scale = 10.0
+        Scale = 50.0
         Position = (0.0, 0.0); Velocity = (0.0, 0.0); Acceleration = 0.0
         Rotation = 0.0; RotationSpeed = 0.0
     }

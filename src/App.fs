@@ -8,16 +8,16 @@ module Main =
     open Fsteroids.Domain
     open Fsteroids.Domain.Math
 
-    let init (canvas: Browser.Canvas) timestamp = 
+    let init (canvas: Canvas) timestamp = 
         let w, h = canvas.width, canvas.height
         let c = w / 2.0, h / 2.0
         { Size = (w, h); Timestamp = timestamp; Ship = Ship.zero |> Ship.move c }
 
-    let render (canvas: Browser.Canvas) (model: State) = 
+    let render (canvas: Canvas) (model: State) = 
         let context = canvas |> Browser.contextOf
         let w, h = model.Size
         Canvas.clear w h context
-        context |> paintShip model.Ship
+        context |> Ship.paint model.Ship
 
     let update model event timestamp = model
 
