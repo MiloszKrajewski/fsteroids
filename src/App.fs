@@ -11,7 +11,7 @@ module Main =
     let init (canvas: Canvas) timestamp = 
         let w, h = canvas.width, canvas.height
         let c = w / 2.0, h / 2.0
-        { Size = (w, h); Timestamp = timestamp; Ship = Ship.zero |> Ship.move c }
+        { State.zero with Size = (w, h); Timestamp = timestamp; Ship = Ship.zero |> Ship.move c }
 
     let render (canvas: Canvas) (model: State) = 
         let context = canvas |> Browser.contextOf
@@ -25,10 +25,8 @@ module Main =
         let push = Game.start init render update Tick
         Browser.onKeyDown (fun e -> 
             match int e.keyCode with
-            | 38 -> Some EngineOn // up
-            | 40 -> Some EngineOff // dn
-            | _ -> None
-            |> Option.iter push
+            | 38 -> Some Up | 40 -> Some Down | _ -> None
+            |> Option.iter (KeyDown >> push)
         )
 
     Browser.onLoad (fun _ -> initialize ())
